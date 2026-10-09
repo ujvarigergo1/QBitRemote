@@ -1,0 +1,58 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+  <Package Name="QBitRemote" Manufacturer="QBitRemote" Version="1.0.0" UpgradeCode="8EAB061C-5B68-4B1A-937B-E02C3D8F75E9" Scope="perMachine">
+    <MajorUpgrade DowngradeErrorMessage="A newer version of QBitRemote is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+    <Icon Id="AppIcon" SourceFile="$(sys.SOURCEFILEDIR)..\QBitRemote\Assets\QBitRemote.ico" />
+    <Property Id="ARPPRODUCTICON" Value="AppIcon" />
+    <WixVariable Id="WixUILicenseRtf" Value="$(sys.SOURCEFILEDIR)LICENSE.rtf" />
+    <ui:WixUI Id="WixUI_Mondo" InstallDirectory="INSTALLFOLDER" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="QBitRemote">
+        <Component Id="MainExecutable" Guid="B4B654E9-00F6-4321-A857-1D93CE6F00A3">
+          <File Id="QBitRemoteExe" Source="$(sys.SOURCEFILEDIR)..\publish\win-x64\QBitRemote.exe" KeyPath="yes" />
+          <RemoveFolder Id="RemoveInstallFolder" On="uninstall" />
+        </Component>
+        <Component Id="StartMenuShortcutComponent" Guid="C8A6C44A-CB64-4DA0-AF5A-566621FE5EB8">
+          <Shortcut Id="StartMenuShortcut" Directory="QBitRemoteProgramMenu" Name="QBitRemote" Description="Remote client for qBittorrent" Target="[#QBitRemoteExe]" WorkingDirectory="INSTALLFOLDER" Icon="AppIcon" />
+          <RemoveFolder Id="RemoveStartMenuFolder" Directory="QBitRemoteProgramMenu" On="uninstall" />
+          <RegistryValue Root="HKLM" Key="Software\QBitRemote" Name="StartMenuShortcut" Value="1" Type="integer" KeyPath="yes" />
+        </Component>
+        <Component Id="DesktopShortcutComponent" Guid="697E9D44-55C6-4C54-AF52-98E1A340B7E7">
+          <Shortcut Id="DesktopShortcut" Directory="DesktopFolder" Name="QBitRemote" Description="Remote client for qBittorrent" Target="[#QBitRemoteExe]" WorkingDirectory="INSTALLFOLDER" Icon="AppIcon" />
+          <RegistryValue Root="HKLM" Key="Software\QBitRemote" Name="DesktopShortcut" Value="1" Type="integer" KeyPath="yes" />
+        </Component>
+        <Component Id="TorrentFileAssociation" Guid="44FAD69F-0E2E-4AD8-9C14-826554128926">
+          <RegistryKey Root="HKCU" Key="Software\Classes\.torrent">
+            <RegistryValue Value="QBitRemote.torrent" KeyPath="yes" />
+          </RegistryKey>
+          <RegistryKey Root="HKCU" Key="Software\Classes\QBitRemote.torrent">
+            <RegistryValue Value="QBitRemote Torrent" />
+            <RegistryValue Name="FriendlyTypeName" Value="QBitRemote torrent file" />
+          </RegistryKey>
+          <RegistryKey Root="HKCU" Key="Software\Classes\QBitRemote.torrent\DefaultIcon">
+            <RegistryValue Value="&quot;[#QBitRemoteExe]&quot;,0" />
+          </RegistryKey>
+          <RegistryKey Root="HKCU" Key="Software\Classes\QBitRemote.torrent\shell\open\command">
+            <RegistryValue Value="&quot;[#QBitRemoteExe]&quot; &quot;%1&quot;" />
+          </RegistryKey>
+        </Component>
+      </Directory>
+    </StandardDirectory>
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="QBitRemoteProgramMenu" Name="QBitRemote" />
+    </StandardDirectory>
+    <Feature Id="Complete" Title="QBitRemote" Level="1">
+      <ComponentRef Id="MainExecutable" />
+      <Feature Id="StartMenuShortcutFeature" Title="Start menu shortcut" Description="Add QBitRemote to the Start menu." Level="1">
+        <ComponentRef Id="StartMenuShortcutComponent" />
+      </Feature>
+      <Feature Id="DesktopShortcutFeature" Title="Desktop shortcut" Description="Add a QBitRemote shortcut to the desktop." Level="1">
+        <ComponentRef Id="DesktopShortcutComponent" />
+      </Feature>
+      <Feature Id="TorrentAssociationFeature" Title="Associate .torrent files with QBitRemote" Description="Open .torrent files with QBitRemote for the current Windows user." Level="1">
+        <ComponentRef Id="TorrentFileAssociation" />
+      </Feature>
+    </Feature>
+  </Package>
+</Wix>

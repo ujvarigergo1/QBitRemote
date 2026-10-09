@@ -1,0 +1,36 @@
+# .NET and Visual Studio build artifacts
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Published binaries, installers, symbols and local tool caches
+publish/
+.tools/
+.wix/
+installer/*.msi
+installer/*.wixpdb
+*.pdb
+TestResults/
+artifacts/
+
+# Local application data, diagnostics and secrets
+settings.json
+appsettings.Development.json
+*.log
+logs/
+secrets.json
+*.pfx
+*.snk
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.bak
+*.tmp

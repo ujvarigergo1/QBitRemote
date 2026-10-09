@@ -1,0 +1,10 @@
+# Keep repository text files deterministic across Windows and Unix contributors.
+* text=auto eol=lf
+
+# Never subject binary assets or release artifacts to line-ending conversion.
+*.ico binary
+*.png binary
+*.msi binary
+*.wixpdb binary
+*.exe binary
+*.pdb binary
